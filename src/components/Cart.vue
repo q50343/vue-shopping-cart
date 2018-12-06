@@ -33,7 +33,6 @@
         </div>               
       </div>            
     </section>
-    <!-- <Alert v-show='alertText'></Alert> -->
   </div>
 </template>
 

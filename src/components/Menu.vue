@@ -46,7 +46,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["products",'cartProducts']),
+    ...mapState(['cartProducts']),
     cart() {
       return this.cartProducts.reduce((current, next) => current + next.num,0);
     }

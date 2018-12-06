@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapState, mapActions} from 'vuex';
+import { mapState } from 'vuex';
 export default {
   computed: {
     ...mapState([
@@ -35,17 +35,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'showOrHiddenPopupCart',
-    ]),
     hasProduct() {
       return this.cartProducts.length > 0;
-    },
-    hiddenSide(){
-      this.isShowSide = false
     }
-  },
-  
+  } 
 };
 </script>
 
@@ -56,7 +49,7 @@ export default {
     box-sizing: border-box;
     padding: 16px;
     position: absolute;
-    right: 50px;
+    right: 56px;
     top: 40px;
     z-index: 2;
     border: 1px solid rgb(131, 131, 131);
