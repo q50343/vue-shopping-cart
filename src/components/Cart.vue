@@ -30,18 +30,27 @@
             <button class="btn-reverse btn">Shopping</button>
           </router-link>
           <button class="btn">Checkout</button>
-        </div>
-      </div>
+        </div>               
+      </div>            
     </section>
+    <Alert v-show='alertText'></Alert>
   </div>
 </template>
 
 <script>
 import { mapActions, mapMutations, mapState } from "vuex";
+import Alert from './Alert'
+
 export default {
+  components:{
+    Alert
+  },
+  computed: {
+    ...mapState(["cartProducts",'alertText'])
+  },
   methods: {
     ...mapActions(["removeProduct", "purchaseNum"]),
-    ...mapMutations(["changeCartIndex", "changeShowSide"]),
+    ...mapMutations(["changeCartIndex", "changeShowSide",]),
     hasProduct() {
       return this.cartProducts.length > 0;
     },
@@ -60,10 +69,7 @@ export default {
     },
     hiddenSide() {
       this.changeShowSide(false);
-    }
-  },
-  computed: {
-    ...mapState(["cartProducts"])
+    },
   }
 };
 </script>
@@ -74,7 +80,6 @@ export default {
   top: 100px;
   left: 0;
   width: 100%;
-  height: 100%;
   background-color: #fff;
   z-index: 1;
 }

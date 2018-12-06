@@ -16,7 +16,7 @@
       <h2 class="product-title">{{ currentProduct.name }}</h2>
       <h3>Color</h3>
       <div>
-        <div v-for="(color) in currentProduct.colors" :key="color.code" class="group">
+        <div v-for="color in currentProduct.colors" :key="color.code" class="group">
           <input
             type="radio"
             :id="color.code"
@@ -70,15 +70,18 @@
     <transition name="appearR">
       <cartSide v-show="showCartSide" @hiddenCartSide="hiddenCartSide"></cartSide>
     </transition>
+    <Alert v-show='alertText'></Alert>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
 import cartSide from "./cartSide";
+import Alert from './Alert'
 export default {
   components: {
-    cartSide
+    cartSide,
+    Alert
   },
   data() {
     return {
@@ -89,16 +92,23 @@ export default {
       currentColorSelect: "",
       currentSizeSelect: "",
       showCartSide: false,
-      toggleAdd: false
+      toggleAdd: false,
     };
   },
   computed: {
-    ...mapState(["cartProducts", "userSelected",'pageType','products','currentProduct']),
+    ...mapState([
+      "cartProducts", 
+      "userSelected",
+      'pageType',
+      'products',
+      'currentProduct',
+      'alertText']),
     total() {
       return this.currentProduct.images.length;
     }
   },
   methods: {
+    ...mapMutations(["changeUserSelected",'showAlert']),
     ...mapActions([
       "addProduct",
       "changeStockNoSize",
@@ -108,20 +118,19 @@ export default {
     ToggleAdd(){
       this.toggleAdd = !this.toggleAdd
     },
-    ...mapMutations(["changeUserSelected"]),
     addProductToCart(product) {
       if (this.colorSelect == "") {
-        alert("請選擇顏色");
+        this.showAlert("請選擇顏色")
         return;
       }
       //   有分有size和無size
       if (this.currentProduct.sizes.length) {
         if (this.sizeSelect == "") {
-          alert("請選擇尺寸");
+          this.showAlert("請選擇尺寸")
         } else {
           this.currentProduct.size = this.sizeSelect;
           if (this.currentProduct.size.stock - this.count < 0) {
-            alert("庫存不足，請重新選取數量");
+            this.showAlert("庫存不足，請重新選取數量")
           } else {
             //判断是否购物车中已经有商品，如果有就增加数量，反之加入这个商品
             let cartIndex = this.cartProducts.findIndex(
@@ -171,7 +180,7 @@ export default {
         (this.currentProduct.color = this.colorSelect),
           (this.currentProduct.num = this.count);
         if (this.currentProduct.sizes.stock - this.count < 0) {
-          alert("庫存不足，請重新選取數量");
+          this.showAlert("庫存不足，請重新選取數量")
         } else {
           //判断是否购物车中已经有商品，如果有就增加数量，反之加入这个商品
           let cartIndex = this.cartProducts.findIndex(
@@ -236,7 +245,7 @@ export default {
         name: 'AllProducts',
         params: { type:this.pageType, getProducts: this.getProducts }
       })
-    }
+    },
   }
 };
 </script>

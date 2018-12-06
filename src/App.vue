@@ -3,7 +3,6 @@
     <Menu></Menu>
     <div class="container">
       <router-view></router-view>
-      <!-- <AllProducts></AllProducts> -->
       <Side></Side>
     </div>
   </div>
@@ -12,13 +11,11 @@
 <script>
 import Menu from "./components/Menu";
 import Side from "./components/Side";
-// import AllProducts from "./components/AllProducts";
 
 export default {
   components: {
     Menu,
     Side,
-    // AllProducts
   }
 };
 </script>

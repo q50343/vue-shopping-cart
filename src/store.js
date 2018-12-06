@@ -1094,6 +1094,7 @@ export default new Vuex.Store({
     cartIndex:'',
     isShowSide: false,
     pageType: 'all',
+    alertText:''
   },
   
   getters: {
@@ -1142,10 +1143,16 @@ export default new Vuex.Store({
     changepageType(state,type){
       state.pageType = type
     },
+    showAlert(state,text){
+      state.alertText = text
+    },
+    closeAlert(state){
+      state.alertText = ''
+    },
     PURCHASE_NUM(state, num){
       if(state.cartProducts[state.cartIndex].num + num >= 1){
         if( state.cartProducts[state.cartIndex].size.stock - num < 0){
-            alert(`庫存只剩${state.cartProducts[state.cartIndex].num}件!!`)
+            state.alertText= `庫存只剩${state.cartProducts[state.cartIndex].num}件!!`
         }else{
             state.cartProducts[state.cartIndex].size.stock -= num
             state.cartProducts[state.cartIndex].num += num
