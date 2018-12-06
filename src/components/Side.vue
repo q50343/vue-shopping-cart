@@ -7,8 +7,8 @@
     <transition name="appearL">
       <div v-show="isShowSide" class="main" :class='{"scroll":scroll}'>
         <div v-show="sortMain" class="sort-main">
-          <h4 @click="getPriceL">Price low to heigh</h4>
-          <h4 @click="getPriceH">Price heigh to low</h4>
+          <h4 @click="getPriceL">Price low to high</h4>
+          <h4 @click="getPriceH">Price high to low</h4>
           <h4 @click="getPopular">Popular</h4>
         </div>
         <div v-show="categoryMain" class="category-main">
