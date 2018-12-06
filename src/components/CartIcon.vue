@@ -56,7 +56,7 @@ export default {
     box-sizing: border-box;
     padding: 16px;
     position: absolute;
-    right: 116px;
+    right: 50px;
     top: 40px;
     z-index: 2;
     border: 1px solid rgb(131, 131, 131);
