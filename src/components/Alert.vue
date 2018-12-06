@@ -26,7 +26,8 @@ export default {
   height: 100%;
   background-color: rgba(0,0,0,0.5);
   top: 0;
-  z-index: 50
+  z-index: 50;
+  left: 0;
 }
 .box{
   width: 300px;

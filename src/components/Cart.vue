@@ -33,20 +33,16 @@
         </div>               
       </div>            
     </section>
-    <Alert v-show='alertText'></Alert>
+    <!-- <Alert v-show='alertText'></Alert> -->
   </div>
 </template>
 
 <script>
 import { mapActions, mapMutations, mapState } from "vuex";
-import Alert from './Alert'
 
 export default {
-  components:{
-    Alert
-  },
   computed: {
-    ...mapState(["cartProducts",'alertText'])
+    ...mapState(["cartProducts"])
   },
   methods: {
     ...mapActions(["removeProduct", "purchaseNum"]),

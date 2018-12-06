@@ -5,18 +5,25 @@
       <router-view></router-view>
       <Side></Side>
     </div>
+    <Alert v-show='alertText'></Alert>
   </div>
 </template>
 
 <script>
 import Menu from "./components/Menu";
 import Side from "./components/Side";
+import Alert from './components/Alert'
+import { mapState } from 'vuex';
 
 export default {
   components: {
     Menu,
     Side,
-  }
+    Alert
+  },
+  computed:{
+    ...mapState(['alertText'])
+    }
 };
 </script>
 

@@ -66,7 +66,7 @@ export default {
   computed: {
     ...mapState(['cartProducts',]),
     cart(){
-      return this.$store.state.cartProducts.length
+      return this.cartProducts.length
     },
     addBorder(color){
       if(color == '#fff') 
@@ -233,6 +233,13 @@ img{
     bottom: 20px;
     right: 20px;
   }
+  .no-data{
+    width: calc(80% - 80px);
+    font-size: 20px;
+    border: 1px solid #000;
+    padding: 100px 20px;
+    margin: 20px 0 0 calc(10% + 60px);
+  }
 }
 @media screen and (max-width:425px) {
   .search-group span{
@@ -251,6 +258,9 @@ img{
   }
   .product{
     margin-bottom: 24px;
+  }
+  .no-data{
+    width: calc(80% - 70px);
   }
 }
 @media screen and (max-width:360px) {

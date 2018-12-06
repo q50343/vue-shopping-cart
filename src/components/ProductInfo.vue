@@ -70,18 +70,15 @@
     <transition name="appearR">
       <cartSide v-show="showCartSide" @hiddenCartSide="hiddenCartSide"></cartSide>
     </transition>
-    <Alert v-show='alertText'></Alert>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
 import cartSide from "./cartSide";
-import Alert from './Alert'
 export default {
   components: {
     cartSide,
-    Alert
   },
   data() {
     return {
@@ -101,8 +98,7 @@ export default {
       "userSelected",
       'pageType',
       'products',
-      'currentProduct',
-      'alertText']),
+      'currentProduct']),
     total() {
       return this.currentProduct.images.length;
     }
