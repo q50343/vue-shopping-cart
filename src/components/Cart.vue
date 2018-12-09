@@ -50,10 +50,7 @@ export default {
       return this.cartProducts.length > 0;
     },
     totalPrice() {
-      return this.cartProducts.reduce(
-        (current, next) => current + next.price * next.num,
-        0
-      );
+      return this.cartProducts.reduce((current, next) => current + next.price * next.num,0);
     },
     Num(index, num) {
       this.changeCartIndex(index);

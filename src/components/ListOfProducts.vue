@@ -1,5 +1,6 @@
 <template>
 <div @click='hiddenSide'>
+  <!-- search -->
   <div class="search-group">
     <span v-show='searching' class="search-inp">
       <input type="text" v-model='search' class="search">
@@ -9,8 +10,9 @@
       <i class="fas fa-search"></i>
       <span>Search</span>
     </span>
-  </div>
+  </div>  
   <h1 v-if='filteredProducts == ""' class="no-data">抱歉，暫無你查詢的內容</h1>
+  <!-- product list -->
   <ul class="listOfProducts" v-else>    
     <li v-for="(product, id) in filteredProducts" :key="id" :data-id='id' class="product">
       <router-link to="/ProductInfo">
@@ -30,7 +32,7 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapMutations } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 
 export default {
   props: ['products'],
@@ -53,9 +55,6 @@ export default {
       this.searching = false 
       this.search = ''     
     },
-    addProductToCart(product) {
-      this.addProduct(product);
-    },
     addCurrentProduct(product) {
       this.changeCurrentProduct(product);
     },
@@ -64,14 +63,6 @@ export default {
     }
   },
   computed: {
-    ...mapState(['cartProducts',]),
-    cart(){
-      return this.cartProducts.length
-    },
-    addBorder(color){
-      if(color == '#fff') 
-      return true
-    },
     filteredProducts(){
       return this.products.filter((product) => {
         return product.name.match(this.search)

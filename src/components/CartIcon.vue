@@ -1,22 +1,24 @@
 <template>
   <div class="box">
-    <span v-if="!hasProduct()">Your Cart is Empty</span>
-    <div v-else v-for="(product, index) in newGetProductsInCart"  :key="index" class="box-item">
-      <img :src="require(`@/assets/img/${product.imageKy}.jpg`)">
-      <div class="item-info">
-        <p class="item-name">{{ product.name }}</p>
-        <div>
-          <span class="color" :style='`background-color:${product.color}`'></span> 
-          <span class="size">{{ product.size.name }}</span>
-        </div>
-        <span class="price" v-if='product.num'>{{product.num}} x </span>
-        <span class="price">NT$ {{ product.price }}</span>
-      </div>     
-    </div>
-    <div class="cart-info" v-if="hasProduct()">
-      <router-link to="/Cart">
-        <button class="btn">View cart</button>
-      </router-link>
+    <span v-if="!hasProduct">Your Cart is Empty</span>
+    <div v-else>
+      <div  v-for="(product, index) in newGetProductsInCart"  :key="index" class="box-item">
+        <img :src="require(`@/assets/img/${product.imageKy}.jpg`)">
+        <div class="item-info">
+          <p class="item-name">{{ product.name }}</p>
+          <div>
+            <span class="color" :style='`background-color:${product.color}`'></span> 
+            <span class="size">{{ product.size.name }}</span>
+          </div>
+          <span class="price" v-if='product.num'>{{product.num}} x </span>
+          <span class="price">NT$ {{ product.price }}</span>
+        </div>     
+      </div>
+      <div class="cart-info">
+        <router-link to="/Cart">
+          <button class="btn">View cart</button>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -28,17 +30,15 @@ export default {
     ...mapState([
       'cartProducts',
     ]),
+    hasProduct() {
+      return this.cartProducts.length > 0;
+    },
     newGetProductsInCart(){
       return this.cartProducts.filter((product,index) => {          
           return index < 3  
       })
     }
-  },
-  methods: {
-    hasProduct() {
-      return this.cartProducts.length > 0;
-    }
-  } 
+  }
 };
 </script>
 

@@ -48,7 +48,7 @@
 
       <div class="num">
         <span class="numC" @click="addNum(-1)">-</span>
-        <span class="count">{{count}}</span>
+        <span class="count">{{ count }}</span>
         <span class="numC" @click="addNum(1)">+</span>
       </div>
       <span class="product-price">NT$ {{ currentProduct.price }}</span>
@@ -78,7 +78,7 @@ import { mapActions, mapState, mapMutations } from "vuex";
 import cartSide from "./cartSide";
 export default {
   components: {
-    cartSide,
+    cartSide
   },
   data() {
     return {
@@ -89,48 +89,52 @@ export default {
       currentColorSelect: "",
       currentSizeSelect: "",
       showCartSide: false,
-      toggleAdd: false,
+      toggleAdd: false
     };
   },
   computed: {
     ...mapState([
-      "cartProducts", 
+      "cartProducts",
       "userSelected",
-      'pageType',
-      'products',
-      'currentProduct']),
+      "pageType",
+      "products",
+      "currentProduct"
+    ]),
     total() {
       return this.currentProduct.images.length;
     }
   },
   methods: {
-    ...mapMutations(["changeUserSelected",'showAlert']),
+    ...mapMutations(["changeUserSelected", "showAlert"]),
     ...mapActions([
       "addProduct",
       "changeStockNoSize",
       "changeStock",
-      "changeStockIfExist",
+      "changeStockIfExist"
     ]),
-    ToggleAdd(){
-      this.toggleAdd = !this.toggleAdd
+    ToggleAdd() {
+      this.toggleAdd = !this.toggleAdd;
     },
     addProductToCart(product) {
       if (this.colorSelect == "") {
-        this.showAlert("請選擇顏色")
+        this.showAlert("請選擇顏色");
         return;
       }
       //   有分有size和無size
       if (this.currentProduct.sizes.length) {
         if (this.sizeSelect == "") {
-          this.showAlert("請選擇尺寸")
+          this.showAlert("請選擇尺寸");
         } else {
           this.currentProduct.size = this.sizeSelect;
           if (this.currentProduct.size.stock - this.count < 0) {
-            this.showAlert("庫存不足，請重新選取數量")
+            this.showAlert("庫存不足，請重新選取數量");
           } else {
             //判断是否购物车中已经有商品，如果有就增加数量，反之加入这个商品
             let cartIndex = this.cartProducts.findIndex(
-              item => item.id === product.id
+              item =>
+                item.id === product.id &&
+                this.colorSelect === item.color &&
+                product.size.name === item.size.name
             );
             //表示不存在 ,要加入商品
             if (cartIndex === -1) {
@@ -145,42 +149,22 @@ export default {
               });
               this.changeStock(this.count);
             } else {
-              // 變更cartIndex 加入size,color 的判斷
-              cartIndex = this.cartProducts.findIndex(
-                item =>
-                  item.id === product.id &&
-                  this.colorSelect === item.color &&
-                  product.size.name === item.size.name
-              );
               this.changeUserSelected(cartIndex);
-              if (cartIndex !== -1) {
-                this.changeStockIfExist(this.count);
-                this.changeStock(this.count);
-              } else {
-                this.addProduct({
-                  id: product.id,
-                  name: product.name,
-                  price: product.price,
-                  imageKy: product.imageKy,
-                  num: this.count,
-                  color: this.colorSelect,
-                  size: this.sizeSelect
-                });
-              }
+              this.changeStockIfExist(this.count);
+              this.changeStock(this.count);
             }
-            this.showCartSide = true;
           }
+          this.showCartSide = true;
         }
       }
       if (this.colorSelect && !this.currentProduct.sizes.length) {
-        (this.currentProduct.color = this.colorSelect),
-          (this.currentProduct.num = this.count);
+        this.currentProduct.color = this.colorSelect;
         if (this.currentProduct.sizes.stock - this.count < 0) {
-          this.showAlert("庫存不足，請重新選取數量")
+          this.showAlert("庫存不足，請重新選取數量");
         } else {
           //判断是否购物车中已经有商品，如果有就增加数量，反之加入这个商品
           let cartIndex = this.cartProducts.findIndex(
-            item => item.id == product.id
+            item => item.id == product.id && this.colorSelect === item.color
           );
           //表示不存在 ,要加入商品
           if (cartIndex === -1) {
@@ -195,24 +179,9 @@ export default {
             });
             this.changeStockNoSize(this.count);
           } else {
-            cartIndex = this.cartProducts.findIndex(
-              item => item.id === product.id && this.colorSelect === item.color
-            );
             this.changeUserSelected(cartIndex);
-            if (cartIndex !== -1) {
-              this.changeStockIfExist(this.count);
-              this.changeStockNoSize(this.count);
-            } else {
-              this.addProduct({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                imageKy: product.imageKy,
-                num: this.count,
-                color: this.colorSelect,
-                size: product.sizes
-              });
-            }
+            this.changeStockIfExist(this.count);
+            this.changeStockNoSize(this.count);
           }
           this.showCartSide = true;
         }
@@ -224,24 +193,27 @@ export default {
       }
     },
     getChangeImg(id) {
-      this.active = (id + this.total) % this.total;
+      this.active = id;
     },
     hiddenCartSide() {
       this.showCartSide = false;
     },
     goBack() {
-      this.getProducts = this.products.filter((product) => {
-        if(this.pageType == 'all'){
-          return product
-        }else{
-          return ( product.type.match(this.pageType) || product.category.match(this.pageType))
-        }        
-      }) 
+      this.getProducts = this.products.filter(product => {
+        if (this.pageType == "all") {
+          return product;
+        } else {
+          return (
+            product.type.match(this.pageType) ||
+            product.category.match(this.pageType)
+          );
+        }
+      });
       this.$router.push({
-        name: 'AllProducts',
-        params: { type:this.pageType, getProducts: this.getProducts }
-      })
-    },
+        name: "AllProducts",
+        params: { type: this.pageType, getProducts: this.getProducts }
+      });
+    }
   }
 };
 </script>
@@ -286,7 +258,9 @@ body {
   position: fixed;
   bottom: 40px;
 }
-.dot[data-id="0"], .dot[data-id="1"], .add {
+.dot[data-id="0"],
+.dot[data-id="1"],
+.add {
   display: none;
 }
 .dot button:before {
@@ -431,7 +405,7 @@ input[type="radio"] {
   cursor: pointer;
 }
 /* hover */
-@media screen and (min-width:991px) {
+@media screen and (min-width: 991px) {
   .num .numC:hover {
     background-color: rgb(110, 109, 109);
     border: 1px solid rgb(110, 109, 109);
@@ -472,7 +446,7 @@ input[type="radio"] {
     transform: scale(1);
   }
 }
-@media screen and (max-width: 991px){
+@media screen and (max-width: 991px) {
   .active0 {
     width: 65vw;
     transform: scale(1.5);
@@ -493,8 +467,8 @@ input[type="radio"] {
   }
 }
 
-@media screen and (max-width: 425px){
-  .img-box{
+@media screen and (max-width: 425px) {
+  .img-box {
     background-color: #fff;
   }
   .active0 {
@@ -507,56 +481,57 @@ input[type="radio"] {
     min-width: 0;
   }
   .active2 {
-    width: 0vw;  
+    width: 0vw;
     min-width: 0;
   }
-  .add{
+  .add {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     background-color: #fff;
     display: block;
     position: fixed;
-    z-index: 10 ;
+    z-index: 10;
     text-align: center;
     font-size: 40px;
     line-height: 50px;
     bottom: 70px;
     right: 20px;
   }
-  .info{
-    display: none
+  .info {
+    display: none;
   }
-  .smSize{
-    display: block
+  .smSize {
+    display: block;
   }
   .rotate {
-    transform: rotate(45deg)
+    transform: rotate(45deg);
   }
-  .dot{
-    transform: translateX(-25vw)
+  .dot {
+    transform: translateX(-25vw);
   }
 }
-@media screen and (max-width: 375px){
-  .info{
+@media screen and (max-width: 375px) {
+  .info {
     width: 260px;
     height: 300px;
     left: 50%;
   }
-  .info h3,.info h2{
+  .info h3,
+  .info h2 {
     font-size: 20px;
-    margin: 10px 0
+    margin: 10px 0;
   }
-  .btn{
+  .btn {
     font-size: 14px;
-    padding: 4px 8px
+    padding: 4px 8px;
   }
-  .product-price{
-    font-size:16px ;
-    bottom: 30px
+  .product-price {
+    font-size: 16px;
+    bottom: 30px;
   }
-  .active0 img{
-    transform: translateX(-65%)
-  } 
+  .active0 img {
+    transform: translateX(-65%);
+  }
 }
 </style>

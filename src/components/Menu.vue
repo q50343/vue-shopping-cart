@@ -17,7 +17,7 @@
               <img class="bag_icon"
                 src="https://static.zara.net/stdstatic/1.88.0-b.50/images/icon-32-shopping-bag.svg"               
               >
-              <span :class="{cart_num_big:cart>9}" class="cart_num">{{cart}}</span>
+              <span :class="{cart_num_big:cart()>9}" class="cart_num">{{ cart() }}</span>
               <span class="hidden-sm">My cart</span>
             </p>
           </router-link>
@@ -38,26 +38,13 @@ export default {
   components: {
     CartIcon
   },
-  data() {
-    return {
-      searching: false,
-      search: "",
-      getProducts:null
-    };
-  },
   computed: {
-    ...mapState(['cartProducts']),
-    cart() {
-      return this.cartProducts.reduce((current, next) => current + next.num,0);
-    }
+    ...mapState(['cartProducts'])  
   },
   methods: {
     ...mapMutations(['changeShowSide','changepageType']),
-    isSearching() {
-      this.searching = true;
-    },
-    noSearching() {
-      this.searching = false;
+    cart() {
+      return this.cartProducts.reduce((current, next) => current + next.num,0);
     },
     hiddenSide(){
       this.changeShowSide(false)
